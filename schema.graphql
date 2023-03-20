@@ -1,0 +1,30 @@
+type Delegated @entity(immutable: true) {
+  id: Bytes!
+  vault: Bytes! # address
+  delegator: Bytes! # address
+  delegate: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewTotalSupplyTwab @entity(immutable: true) {
+  id: Bytes!
+  vault: Bytes! # address
+  newTotalSupplyTwab_amount: BigInt! # uint224
+  newTotalSupplyTwab_timestamp: BigInt! # uint32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewUserTwab @entity(immutable: true) {
+  id: Bytes!
+  vault: Bytes! # address
+  user: Bytes! # address
+  newTwab_amount: BigInt! # uint224
+  newTwab_timestamp: BigInt! # uint32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

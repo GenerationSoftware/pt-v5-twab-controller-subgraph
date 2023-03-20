@@ -1,0 +1,22 @@
+node_modules
+.history
+build
+
+subgraph.yaml
+
+subgraph.goerli.yaml
+subgraph.mainnet.yaml
+subgraph.polygon.yaml
+subgraph.mumbai.yaml
+subgraph.avalanche.yaml
+subgraph.optimism.yaml
+subgraph.optimism-goerli.yaml
+subgraph.arbitrum-goerli.yaml
+
+networks/local.json
+generated
+generated/schema.ts
+build
+
+# Matchstick binaries
+tests/.bin/
