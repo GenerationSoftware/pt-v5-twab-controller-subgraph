@@ -28,6 +28,6 @@ dataSources:
           handler: handleNewTotalSupplyTwab
         - event: NewUserTwab(indexed address,indexed address,(uint224,uint32))
           handler: handleNewUserTwab
-      file: ./src/twab-controller.ts
+      file: ./src/mappings/twab-controller.ts
   {{/twabController}}
   
