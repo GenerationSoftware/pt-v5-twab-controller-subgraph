@@ -17,7 +17,7 @@ dataSources:
       entities:
         - Delegated
         - NewTotalSupplyTwab
-        - NewUserTwab
+        - IncreasedBalance
       abis:
         - name: TwabController
           file: ./abis/TwabController.json
@@ -26,8 +26,8 @@ dataSources:
           handler: handleDelegated
         - event: NewTotalSupplyTwab(indexed address,(uint224,uint32))
           handler: handleNewTotalSupplyTwab
-        - event: NewUserTwab(indexed address,indexed address,(uint224,uint32))
-          handler: handleNewUserTwab
+        - event: IncreasedBalance(indexed address,indexed address,(uint224,uint32))
+          handler: handleIncreasedBalance
       file: ./src/mappings/twab-controller.ts
   {{/twabController}}
   

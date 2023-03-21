@@ -89,7 +89,7 @@
           "type": "tuple"
         }
       ],
-      "name": "NewUserTwab",
+      "name": "IncreasedBalance",
       "type": "event"
     },
     {
