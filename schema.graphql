@@ -1,15 +1,14 @@
 type Vault @entity(immutable: true) {
     id: Bytes!
-    users: [User!]! @derivedFrom(field: "vault")
-    # accounts: [Account!]! @derivedFrom(field: "vault")
+    accounts: [Account!]! @derivedFrom(field: "vault")
 }
 
 type User @entity {
     id: Bytes! # user's address
-    vaults: [Vault!]! @derivedFrom(field: "id")
     accounts: [Account!]! @derivedFrom(field: "user")
 }
 
+# MANY TO MANY "JOIN" TABLE
 type Account @entity {
     id: String! # vault address + user address
     vault: Vault!
@@ -22,8 +21,7 @@ type Account @entity {
 }
 
 type Twab @entity {
-    # id: String! # delegate address + timestamp // ? keep?
-    id: String! # account address + timestamp
+    id: String! # delegate address + timestamp
     amount: BigInt!
     delegateBalance: BigInt!
     timestamp: BigInt!
@@ -54,13 +52,13 @@ type Twab @entity {
 #     account: Account!
 # }
 
-
 # GENERATED
 # type Delegated @entity(immutable: true) {
 #   id: Bytes!
 #   vault: Bytes! # address
 #   delegator: Bytes! # address
 #   delegate: Bytes! # address
+#
 #   blockNumber: BigInt!
 #   blockTimestamp: BigInt!
 #   transactionHash: Bytes!
@@ -71,9 +69,6 @@ type Twab @entity {
 #   vault: Bytes! # address
 #   newTotalSupplyTwab_amount: BigInt! # uint224
 #   newTotalSupplyTwab_timestamp: BigInt! # uint32
-#   blockNumber: BigInt!
-#   blockTimestamp: BigInt!
-#   transactionHash: Bytes!
 # }
 
 # type NewUserTwab @entity(immutable: true) {
@@ -82,7 +77,4 @@ type Twab @entity {
 #   user: Bytes! # address
 #   newTwab_amount: BigInt! # uint224
 #   newTwab_timestamp: BigInt! # uint32
-#   blockNumber: BigInt!
-#   blockTimestamp: BigInt!
-#   transactionHash: Bytes!
 # }

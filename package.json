@@ -8,11 +8,26 @@
     "create-local": "graph create --node http://localhost:8020/ @pooltogether/v5-twab-controller-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ @pooltogether/v5-twab-controller-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 @pooltogether/v5-twab-controller-subgraph",
+    "prepare:mainnet": "mustache networks/mainnet.json subgraph.template.yaml subgraph.mainnet.yaml",
+    "prepare:goerli": "mustache networks/goerli.json subgraph.template.yaml subgraph.goerli.yaml",
+    "gen:mainnet": "graph codegen subgraph.mainnet.yaml",
+    "gen:goerli": "graph codegen subgraph.goerli.yaml",
+    "deploy:mainnet:hosted": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pooltogether/v5-eth-mainnet-twab-controller subgraph.mainnet.yaml",
+    "deploy:mainnet:decentralized": "graph deploy --studio v5-eth-mainnet-twab-controller subgraph.mainnet.yaml",
+    "deploy:goerli": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ pooltogether/v5-eth-goerli-twab-controller subgraph.goerli.yaml",
+    "all-goerli": "yarn clean && yarn prepare:goerli && yarn gen:goerli && yarn deploy:goerli",
+    "all-mainnet:hosted": "yarn clean && yarn prepare:mainnet && yarn gen:mainnet && yarn deploy:mainnet:hosted",
+    "all-mainnet:decentralized": "yarn clean && yarn prepare:mainnet && yarn gen:mainnet && yarn deploy:mainnet:decentralized",
+    "build:mainnet": "graph build subgraph.mainnet.yaml",
+    "build:goerli": "graph build subgraph.goerli.yaml",
     "test": "graph test"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.43.0",
-    "@graphprotocol/graph-ts": "0.29.1"
+    "@graphprotocol/graph-ts": "0.29.1",
+    "mustache": "^4.2.0"
   },
-  "devDependencies": { "matchstick-as": "0.5.0" }
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
+  }
 }

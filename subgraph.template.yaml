@@ -1,0 +1,33 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  {{#twabController}}
+  - kind: ethereum
+    name: TwabController
+    network: {{network}}
+    source:
+      address: "{{twabController.address}}"
+      abi: TwabController
+      startBlock: {{twabController.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Delegated
+        - NewTotalSupplyTwab
+        - NewUserTwab
+      abis:
+        - name: TwabController
+          file: ./abis/TwabController.json
+      eventHandlers:
+        - event: Delegated(indexed address,indexed address,indexed address)
+          handler: handleDelegated
+        - event: NewTotalSupplyTwab(indexed address,(uint224,uint32))
+          handler: handleNewTotalSupplyTwab
+        - event: NewUserTwab(indexed address,indexed address,(uint224,uint32))
+          handler: handleNewUserTwab
+      file: ./src/twab-controller.ts
+  {{/twabController}}
+  
