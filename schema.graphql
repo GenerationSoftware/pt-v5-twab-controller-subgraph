@@ -12,8 +12,8 @@ type Account @entity {
     id: String! # vault address + user address
     vault: Vault!
     user: User!
-    balance: BigInt # balance in account
-    delegateBalance: BigInt # amount of balance delegated to this account
+    balance: BigInt! # balance in account
+    delegateBalance: BigInt! # amount of balance delegated to this account
     twabs: [Twab!]! @derivedFrom(field: "account")
     delegates: [Account!]! @derivedFrom(field: "delegatee") # accounts who delegated to this account
     delegatee: Account # account to whom this account delegates their balances

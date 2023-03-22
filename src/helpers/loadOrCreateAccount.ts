@@ -13,6 +13,8 @@ export function loadOrCreateAccount(vaultId: Bytes, userId: Bytes): Account {
     // create case
     if (account == null) {
         account = new Account(compositeId);
+        account.vault = vaultId;
+        account.user = userId;
     }
 
     return account as Account;
