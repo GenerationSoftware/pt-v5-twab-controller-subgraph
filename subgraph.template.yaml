@@ -22,12 +22,16 @@ dataSources:
         - name: TwabController
           file: ./abis/TwabController.json
       eventHandlers:
+        - event: DecreasedBalance(indexed address,indexed address,uint112,uint112,bool,(uint224,uint32))
+          handler: handleDecreasedBalance
+        - event: DecreasedTotalSupply(indexed address,uint112,uint112,bool,(uint224,uint32))
+          handler: handleDecreasedTotalSupply
         - event: Delegated(indexed address,indexed address,indexed address)
           handler: handleDelegated
-        - event: NewTotalSupplyTwab(indexed address,(uint224,uint32))
-          handler: handleNewTotalSupplyTwab
-        - event: IncreasedBalance(indexed address,indexed address,(uint224,uint32))
+        - event: IncreasedBalance(indexed address,indexed address,uint112,uint112,bool,(uint224,uint32))
           handler: handleIncreasedBalance
+        - event: IncreasedTotalSupply(indexed address,uint112,uint112,bool,(uint224,uint32))
+          handler: handleIncreasedTotalSupply
       file: ./src/mappings/twab-controller.ts
   {{/twabController}}
   
