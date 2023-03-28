@@ -1,7 +1,7 @@
 import { Bytes } from '@graphprotocol/graph-ts';
 
 import { Account, Vault, User } from '../../generated/schema';
-import { generateCompositeId } from '../helpers/common';
+import { ZERO, generateCompositeId } from '../helpers/common';
 
 export function loadOrCreateAccount(vaultId: Bytes, userId: Bytes): Account {
     loadOrCreateVault(vaultId);
@@ -15,6 +15,7 @@ export function loadOrCreateAccount(vaultId: Bytes, userId: Bytes): Account {
         account = new Account(compositeId);
         account.vault = vaultId;
         account.user = userId;
+        account.balance = ZERO;
     }
 
     return account as Account;

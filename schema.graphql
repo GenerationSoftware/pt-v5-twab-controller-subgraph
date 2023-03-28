@@ -13,7 +13,7 @@ type Account @entity {
     vault: Vault!
     user: User!
     balance: BigInt! # balance in account
-    delegateBalance: BigInt! # amount of balance delegated to this account
+    delegateBalance: BigInt # amount of balance delegated to this account
     twabs: [Twab!]! @derivedFrom(field: "account")
     delegates: [Account!]! @derivedFrom(field: "delegatee") # accounts who delegated to this account
     delegatee: Account # account to whom this account delegates their balances
@@ -26,50 +26,3 @@ type Twab @entity {
     timestamp: BigInt!
     account: Account!
 }
-
-# // V4
-# type Ticket @entity {
-#     id: ID! # ticket address
-#     accounts: [Account!]! @derivedFrom(field: "ticket")
-# }
-
-# type Account @entity {
-#     id: ID! # account address
-#     balance: BigInt # ticket balance in user wallet
-#     delegateBalance: BigInt # amount of tickets delegated to this account
-#     ticket: Ticket
-#     twabs: [Twab!]! @derivedFrom(field: "account")
-#     delegates: [Account!]! @derivedFrom(field: "delegatee") # accounts who delegated to this account
-#     delegatee: Account # account to whom this account delegates his tickets
-# }
-
-# type Twab @entity {
-#     id: ID! # delegate address + timestamp
-#     amount: BigInt!
-#     delegateBalance: BigInt!
-#     timestamp: BigInt!
-#     account: Account!
-# }
-
-# GENERATED
-# type Delegated @entity(immutable: true) {
-#   id: Bytes!
-#   vault: Bytes! # address
-#   delegator: Bytes! # address
-#   delegate: Bytes! # address
-# }
-
-# type NewTotalSupplyTwab @entity(immutable: true) {
-#   id: Bytes!
-#   vault: Bytes! # address
-#   newTotalSupplyTwab_amount: BigInt! # uint224
-#   newTotalSupplyTwab_timestamp: BigInt! # uint32
-# }
-
-# type IncreasedBalance @entity(immutable: true) {
-#   id: Bytes!
-#   vault: Bytes! # address
-#   user: Bytes! # address
-#   newTwab_amount: BigInt! # uint224
-#   newTwab_timestamp: BigInt! # uint32
-# }
