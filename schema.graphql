@@ -25,4 +25,5 @@ type Twab @entity {
     delegateBalance: BigInt!
     timestamp: BigInt!
     account: Account!
+    isNew: Boolean!
 }

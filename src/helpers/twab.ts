@@ -7,10 +7,12 @@ export const setTwab = (
     account: Account,
     amount: BigInt,
     delegateAmount: BigInt,
+    isNew: bool,
     timestamp: BigInt,
 ): void => {
     twab.account = account.id;
     twab.amount = amount;
     twab.delegateBalance = delegateAmount;
+    twab.isNew = isNew;
     twab.timestamp = timestamp;
 };
