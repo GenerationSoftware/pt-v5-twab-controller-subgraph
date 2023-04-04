@@ -1,5 +1,6 @@
 type Vault @entity(immutable: true) {
     id: Bytes!
+    #totalSupply: BigInt!
     accounts: [Account!]! @derivedFrom(field: "vault")
 }
 

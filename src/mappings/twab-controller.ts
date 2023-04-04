@@ -20,6 +20,7 @@ export function handleIncreasedBalance(event: IncreasedBalance): void {
 
     const account = loadOrCreateAccount(vault, user);
     increaseBalance(account, amount);
+    // increaseDelegateBalance(account, amount);
 
     const timestamp = event.block.timestamp;
     const twab = createTwab(vault, user, timestamp);
@@ -38,7 +39,7 @@ export function handleDecreasedBalance(event: DecreasedBalance): void {
 
     const eventTwabAmount = event.params.twab.amount;
 
-    log.info('decrease bal: {}, {}, {}, {}, {}, {}, {}', [
+    log.info('decrease bal: {}, {}, {}, {}, {}, {}', [
         vault.toHexString(),
         user.toHexString(),
         amount.toString(),
