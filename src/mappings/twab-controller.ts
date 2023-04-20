@@ -17,7 +17,6 @@ import { createTwab } from '../helpers/createTwab';
 import { loadOrCreateAccount } from '../helpers/loadOrCreateAccount';
 import { loadOrCreateVault } from '../helpers/loadOrCreateVault';
 import { setTwab } from '../helpers/twab';
-// import { log } from '@graphprotocol/graph-ts';
 
 export function handleIncreasedBalance(event: IncreasedBalance): void {
     const vault = event.params.vault;
@@ -44,17 +43,6 @@ export function handleDecreasedBalance(event: DecreasedBalance): void {
     const amount = event.params.amount;
     const delegateAmount = event.params.delegateAmount;
     const isNew = event.params.isNew;
-
-    // const eventTwabAmount = event.params.twab.amount;
-
-    // log.info('decrease bal: {}, {}, {}, {}, {}, {}', [
-    //     vault.toHexString(),
-    //     user.toHexString(),
-    //     amount.toString(),
-    //     delegateAmount.toString(),
-    //     isNew.toString(),
-    //     eventTwabAmount.toString(),
-    // ]);
 
     const account = loadOrCreateAccount(vault, user);
     decreaseBalance(account, amount);
