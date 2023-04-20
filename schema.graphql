@@ -1,6 +1,6 @@
-type Vault @entity(immutable: true) {
+type Vault @entity {
     id: Bytes!
-    #totalSupply: BigInt!
+    totalSupply: BigInt!
     accounts: [Account!]! @derivedFrom(field: "vault")
 }
 
@@ -14,7 +14,7 @@ type Account @entity {
     vault: Vault!
     user: User!
     balance: BigInt! # balance in account
-    delegateBalance: BigInt # amount of balance delegated to this account
+    delegateBalance: BigInt! # amount of balance delegated to this account
     twabs: [Twab!]! @derivedFrom(field: "account")
     delegates: [Account!]! @derivedFrom(field: "delegatee") # accounts who delegated to this account
     delegatee: Account # account to whom this account delegates their balances

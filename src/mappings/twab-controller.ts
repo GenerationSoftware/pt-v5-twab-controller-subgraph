@@ -5,11 +5,19 @@ import {
     DecreasedTotalSupply,
     Delegated,
 } from '../../generated/TwabController/TwabController';
-import { increaseBalance, decreaseBalance, setDelegatee } from '../helpers/account';
+import {
+    increaseBalance,
+    decreaseBalance,
+    increaseDelegateBalance,
+    decreaseDelegateBalance,
+    setDelegatee,
+} from '../helpers/account';
+import { increaseTotalSupply, decreaseTotalSupply } from '../helpers/vault';
 import { createTwab } from '../helpers/createTwab';
 import { loadOrCreateAccount } from '../helpers/loadOrCreateAccount';
+import { loadOrCreateVault } from '../helpers/loadOrCreateVault';
 import { setTwab } from '../helpers/twab';
-import { log } from '@graphprotocol/graph-ts';
+// import { log } from '@graphprotocol/graph-ts';
 
 export function handleIncreasedBalance(event: IncreasedBalance): void {
     const vault = event.params.vault;
@@ -20,7 +28,7 @@ export function handleIncreasedBalance(event: IncreasedBalance): void {
 
     const account = loadOrCreateAccount(vault, user);
     increaseBalance(account, amount);
-    // increaseDelegateBalance(account, amount);
+    increaseDelegateBalance(account, delegateAmount);
 
     const timestamp = event.block.timestamp;
     const twab = createTwab(vault, user, timestamp);
@@ -37,19 +45,20 @@ export function handleDecreasedBalance(event: DecreasedBalance): void {
     const delegateAmount = event.params.delegateAmount;
     const isNew = event.params.isNew;
 
-    const eventTwabAmount = event.params.twab.amount;
+    // const eventTwabAmount = event.params.twab.amount;
 
-    log.info('decrease bal: {}, {}, {}, {}, {}, {}', [
-        vault.toHexString(),
-        user.toHexString(),
-        amount.toString(),
-        delegateAmount.toString(),
-        isNew.toString(),
-        eventTwabAmount.toString(),
-    ]);
+    // log.info('decrease bal: {}, {}, {}, {}, {}, {}', [
+    //     vault.toHexString(),
+    //     user.toHexString(),
+    //     amount.toString(),
+    //     delegateAmount.toString(),
+    //     isNew.toString(),
+    //     eventTwabAmount.toString(),
+    // ]);
 
     const account = loadOrCreateAccount(vault, user);
     decreaseBalance(account, amount);
+    decreaseDelegateBalance(account, delegateAmount);
 
     const timestamp = event.block.timestamp;
     const twab = createTwab(vault, user, timestamp);
@@ -59,28 +68,25 @@ export function handleDecreasedBalance(event: DecreasedBalance): void {
     account.save();
 }
 
-// only logs for the time being
 export function handleIncreasedTotalSupply(event: IncreasedTotalSupply): void {
     const vault = event.params.vault;
     const amount = event.params.amount;
-    const delegateAmount = event.params.delegateAmount;
-    const isNew = event.params.isNew;
-    const twab = event.params.twab;
 
-    const eventTwabAmount = event.params.twab.amount;
-    const eventTwabTimestamp = event.params.twab.timestamp;
+    const vaultEntity = loadOrCreateVault(vault);
+    increaseTotalSupply(vaultEntity, amount);
 
-    log.info('handleIncreasedTotalSupply: {}, {}, {}, {}, {}, {}', [
-        vault.toHexString(),
-        amount.toString(),
-        delegateAmount.toString(),
-        isNew.toString(),
-        eventTwabAmount.toString(),
-        eventTwabTimestamp.toString(),
-    ]);
+    vaultEntity.save();
 }
 
-export function handleDecreasedTotalSupply(event: DecreasedTotalSupply): void {}
+export function handleDecreasedTotalSupply(event: DecreasedTotalSupply): void {
+    const vault = event.params.vault;
+    const amount = event.params.amount;
+
+    const vaultEntity = loadOrCreateVault(vault);
+    decreaseTotalSupply(vaultEntity, amount);
+
+    vaultEntity.save();
+}
 
 export function handleDelegated(event: Delegated): void {
     const vault = event.params.vault;

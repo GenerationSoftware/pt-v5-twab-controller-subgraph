@@ -2,6 +2,7 @@ import { Bytes } from '@graphprotocol/graph-ts';
 
 import { Account, Vault, User } from '../../generated/schema';
 import { ZERO, generateCompositeId } from '../helpers/common';
+import { loadOrCreateVault } from '../helpers/loadOrCreateVault';
 
 export function loadOrCreateAccount(vaultId: Bytes, userId: Bytes): Account {
     loadOrCreateVault(vaultId);
@@ -16,21 +17,10 @@ export function loadOrCreateAccount(vaultId: Bytes, userId: Bytes): Account {
         account.vault = vaultId;
         account.user = userId;
         account.balance = ZERO;
+        account.delegateBalance = ZERO;
     }
 
     return account as Account;
-}
-
-function loadOrCreateVault(id: Bytes): Vault {
-    let vault = Vault.load(id);
-
-    // create case
-    if (vault == null) {
-        vault = new Vault(id);
-        vault.save();
-    }
-
-    return vault as Vault;
 }
 
 function loadOrCreateUser(id: Bytes): User {
