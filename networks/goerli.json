@@ -1,7 +1,7 @@
 {
   "network": "goerli",
   "twabController": {
-    "address": "0x72c7C914b7B9d1aF9EeE7E2b533A3a263210390C",
-    "startBlock": "8733530"
+    "address": "0xc4a7a720912dc744fbcd0dacac9b783334a49ed6",
+    "startBlock": "8897000"
   }
 }
