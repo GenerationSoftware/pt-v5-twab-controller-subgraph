@@ -12,19 +12,26 @@
 
 Monitors changes in v5 time-weighted average balances.
 
-### Quick-use:
+## Quick-use:
 
-#### For Mainnet:
+### For Mainnet:
 
 ```sh
 $ yarn all-mainnet
 ```
-#### For Testnet:
+
+### For Testnet:
 
 #### For Goerli:
 
 ```sh
-$ yarn all-goerli
+$ yarn all-goerli:hosted
+```
+
+#### For Sepolia:
+
+```sh
+$ yarn all-sepolia:decentralized
 ```
 
 ### Hosted Subgraphs
@@ -32,7 +39,13 @@ $ yarn all-goerli
 Subgraphs are hosted at the following URLs.
 
 Mainnet:
-- https://thegraph.com/hosted-service/subgraph/pooltogether/v5-mainnet-twab-controller
 
-Testnet:
-- https://thegraph.com/hosted-service/subgraph/pooltogether/v5-eth-goerli-twab-controller
+-   https://thegraph.com/hosted-service/subgraph/pooltogether/v5-mainnet-twab-controller
+
+Testnet (Ethereum Goerli):
+
+-   https://thegraph.com/hosted-service/subgraph/pooltogether/v5-eth-goerli-twab-controller
+
+Testnet (Ethereum Sepolia):
+
+-   https://api.studio.thegraph.com/query/41211/v5-twab-controller-eth-sepolia/v0.0.1
