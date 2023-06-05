@@ -15,23 +15,27 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Delegated
-        - NewTotalSupplyTwab
-        - IncreasedBalance
+        - Vault
+        - User
+        - Account
+        - BalanceChange
+        - TwabObservation
       abis:
         - name: TwabController
           file: ./abis/TwabController.json
       eventHandlers:
-        - event: DecreasedBalance(indexed address,indexed address,uint112,uint112,bool,(uint224,uint32))
+        - event: DecreasedBalance(indexed address,indexed address,uint96,uint96)
           handler: handleDecreasedBalance
-        - event: DecreasedTotalSupply(indexed address,uint112,uint112,bool,(uint224,uint32))
+        - event: DecreasedTotalSupply(indexed address,uint96,uint96)
           handler: handleDecreasedTotalSupply
         - event: Delegated(indexed address,indexed address,indexed address)
           handler: handleDelegated
-        - event: IncreasedBalance(indexed address,indexed address,uint112,uint112,bool,(uint224,uint32))
+        - event: IncreasedBalance(indexed address,indexed address,uint96,uint96)
           handler: handleIncreasedBalance
-        - event: IncreasedTotalSupply(indexed address,uint112,uint112,bool,(uint224,uint32))
+        - event: IncreasedTotalSupply(indexed address,uint96,uint96)
           handler: handleIncreasedTotalSupply
+        - event: ObservationRecorded(indexed address,indexed address,uint112,uint112,bool,(uint128,uint96,uint32))
+          handler: handleObservationRecorded
       file: ./src/mappings/twab-controller.ts
   {{/twabController}}
   

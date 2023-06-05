@@ -1,6 +1,6 @@
 import { Bytes } from '@graphprotocol/graph-ts';
 
-import { Account, Vault, User } from '../../generated/schema';
+import { Account, User } from '../../generated/schema';
 import { ZERO, generateCompositeId } from '../helpers/common';
 import { loadOrCreateVault } from '../helpers/loadOrCreateVault';
 

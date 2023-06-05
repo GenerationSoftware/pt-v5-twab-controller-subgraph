@@ -15,14 +15,26 @@ type Account @entity {
     user: User!
     balance: BigInt! # balance in account
     delegateBalance: BigInt! # amount of balance delegated to this account
-    twabs: [Twab!]! @derivedFrom(field: "account")
-    delegates: [Account!]! @derivedFrom(field: "delegatee") # accounts who delegated to this account
-    delegatee: Account # account to whom this account delegates their balances
+    delegateTwab: BigInt! # last observed weighted balance delegated to this account
+    balanceChanges: [BalanceChange!]! @derivedFrom(field: "account")
+    twabObservations: [TwabObservation!]! @derivedFrom(field: "account")
+    delegators: [Account!]! @derivedFrom(field: "delegate") # accounts who delegated to this account
+    delegate: Account # account to whom this account delegates their balances
 }
 
-type Twab @entity {
-    id: String! # account address + timestamp
+type BalanceChange @entity {
+    id: String! # account ID + timestamp
     amount: BigInt!
+    delegateAmount: BigInt!
+    newBalance: BigInt!
+    newDelegateBalance: BigInt!
+    timestamp: BigInt!
+    account: Account!
+}
+
+type TwabObservation @entity {
+    id: String! # account ID + timestamp
+    delegateTwab: BigInt! # aka. cumulativeBalance
     delegateBalance: BigInt!
     timestamp: BigInt!
     account: Account!

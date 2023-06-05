@@ -18,6 +18,6 @@ export const decreaseDelegateBalance = (account: Account, amount: BigInt): void 
     account.delegateBalance = account.delegateBalance.minus(amount);
 };
 
-export const setDelegatee = (account: Account, delegateeId: string): void => {
-    account.delegatee = delegateeId;
+export const setDelegate = (account: Account, delegateId: string): void => {
+    account.delegate = delegateId;
 };
