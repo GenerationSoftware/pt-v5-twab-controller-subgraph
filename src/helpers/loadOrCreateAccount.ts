@@ -18,7 +18,7 @@ export function loadOrCreateAccount(vaultId: Bytes, userId: Bytes): Account {
         account.user = userId;
         account.balance = ZERO;
         account.delegateBalance = ZERO;
-        account.delegateTwab = ZERO;
+        account.save();
     }
 
     return account as Account;

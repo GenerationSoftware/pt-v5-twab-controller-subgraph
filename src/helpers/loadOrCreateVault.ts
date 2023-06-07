@@ -9,9 +9,8 @@ export function loadOrCreateVault(id: Bytes): Vault {
     // create case
     if (vault == null) {
         vault = new Vault(id);
-        vault.totalSupply = ZERO;
-        vault.totalDelegateBalance = ZERO;
-        vault.totalDelegateTwab = ZERO;
+        vault.balance = ZERO;
+        vault.delegateBalance = ZERO;
         vault.save();
     }
 

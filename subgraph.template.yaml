@@ -18,9 +18,10 @@ dataSources:
         - Vault
         - User
         - Account
-        - BalanceChange
-        - TwabObservation
-        - VaultTwabObservation
+        - AccountBalanceUpdate
+        - VaultBalanceUpdate
+        - AccountObservation
+        - VaultObservation
       abis:
         - name: TwabController
           file: ./abis/TwabController.json

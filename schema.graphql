@@ -1,10 +1,9 @@
 type Vault @entity {
     id: Bytes!
-    totalSupply: BigInt!
-    totalDelegateBalance: BigInt!
-    totalDelegateTwab: BigInt!
-    supplyChanges: [VaultSupplyChange!]! @derivedFrom(field: "vault")
-    twabObservations: [VaultTwabObservation!]! @derivedFrom(field: "vault")
+    balance: BigInt!
+    delegateBalance: BigInt!
+    balanceUpdates: [VaultBalanceUpdate!]! @derivedFrom(field: "vault")
+    observations: [VaultObservation!]! @derivedFrom(field: "vault")
     accounts: [Account!]! @derivedFrom(field: "vault")
 }
 
@@ -19,47 +18,63 @@ type Account @entity {
     user: User!
     balance: BigInt! # balance in account
     delegateBalance: BigInt! # amount of balance delegated to this account
-    delegateTwab: BigInt! # last observed weighted balance delegated to this account
-    balanceChanges: [BalanceChange!]! @derivedFrom(field: "account")
-    twabObservations: [TwabObservation!]! @derivedFrom(field: "account")
+    balanceUpdates: [AccountBalanceUpdate!]! @derivedFrom(field: "account")
+    observations: [AccountObservation!]! @derivedFrom(field: "account")
     delegators: [Account!]! @derivedFrom(field: "delegate") # accounts who delegated to this account
     delegate: Account # account to whom this account delegates their balances
 }
 
-type BalanceChange @entity {
-    id: String! # account ID + timestamp
+type AccountBalanceUpdate implements BalanceUpdate @entity {
+    id: ID!
     amount: BigInt!
     delegateAmount: BigInt!
-    newBalance: BigInt!
-    newDelegateBalance: BigInt!
+    balance: BigInt!
+    delegateBalance: BigInt!
     timestamp: BigInt!
     account: Account!
 }
 
-type VaultSupplyChange @entity {
-    id: String! # vault address + timestamp
+type VaultBalanceUpdate implements BalanceUpdate @entity {
+    id: ID!
     amount: BigInt!
-    newTotalSupply: BigInt!
+    delegateAmount: BigInt!
+    balance: BigInt!
+    delegateBalance: BigInt!
     timestamp: BigInt!
     vault: Vault!
 }
 
-type TwabObservation @entity {
-    id: String! # account ID + timestamp
+type AccountObservation implements Observation @entity {
+    id: ID!
     account: Account!
     balance: BigInt!
     delegateBalance: BigInt!
-    delegateTwab: BigInt! # aka. cumulativeBalance
+    cumulativeBalance: BigInt!
     timestamp: BigInt!
     isNew: Boolean!
 }
 
-type VaultTwabObservation @entity {
-    id: String! # Vault ID + timestamp
+type VaultObservation implements Observation @entity {
+    id: ID!
     vault: Vault!
     balance: BigInt!
     delegateBalance: BigInt!
-    delegateTwab: BigInt! # aka. cumulativeBalance
+    cumulativeBalance: BigInt!
     timestamp: BigInt!
     isNew: Boolean!
+}
+
+interface BalanceUpdate {
+    amount: BigInt!
+    delegateAmount: BigInt!
+    balance: BigInt!
+    delegateBalance: BigInt!
+    timestamp: BigInt!
+}
+
+interface Observation {
+    balance: BigInt!
+    delegateBalance: BigInt!
+    cumulativeBalance: BigInt!
+    timestamp: BigInt!
 }
