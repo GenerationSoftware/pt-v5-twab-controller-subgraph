@@ -1,6 +1,10 @@
 type Vault @entity {
     id: Bytes!
     totalSupply: BigInt!
+    totalDelegateBalance: BigInt!
+    totalDelegateTwab: BigInt!
+    supplyChanges: [VaultSupplyChange!]! @derivedFrom(field: "vault")
+    twabObservations: [VaultTwabObservation!]! @derivedFrom(field: "vault")
     accounts: [Account!]! @derivedFrom(field: "vault")
 }
 
@@ -32,11 +36,30 @@ type BalanceChange @entity {
     account: Account!
 }
 
+type VaultSupplyChange @entity {
+    id: String! # vault address + timestamp
+    amount: BigInt!
+    newTotalSupply: BigInt!
+    timestamp: BigInt!
+    vault: Vault!
+}
+
 type TwabObservation @entity {
     id: String! # account ID + timestamp
-    delegateTwab: BigInt! # aka. cumulativeBalance
-    delegateBalance: BigInt!
-    timestamp: BigInt!
     account: Account!
+    balance: BigInt!
+    delegateBalance: BigInt!
+    delegateTwab: BigInt! # aka. cumulativeBalance
+    timestamp: BigInt!
+    isNew: Boolean!
+}
+
+type VaultTwabObservation @entity {
+    id: String! # Vault ID + timestamp
+    vault: Vault!
+    balance: BigInt!
+    delegateBalance: BigInt!
+    delegateTwab: BigInt! # aka. cumulativeBalance
+    timestamp: BigInt!
     isNew: Boolean!
 }

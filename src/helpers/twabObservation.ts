@@ -19,12 +19,14 @@ export function createTwabObservation(vaultId: Bytes, userId: Bytes, timestamp: 
 export const setTwabObservation = (
     twabObservation: TwabObservation,
     account: Account,
-    delegateTwab: BigInt,
+    balance: BigInt,
     delegateBalance: BigInt,
+    delegateTwab: BigInt,
     isNew: boolean,
     timestamp: BigInt,
 ): void => {
     twabObservation.account = account.id;
+    twabObservation.balance = balance;
     twabObservation.delegateTwab = delegateTwab;
     twabObservation.delegateBalance = delegateBalance;
     twabObservation.isNew = isNew;

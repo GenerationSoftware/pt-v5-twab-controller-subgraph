@@ -10,6 +10,8 @@ export function loadOrCreateVault(id: Bytes): Vault {
     if (vault == null) {
         vault = new Vault(id);
         vault.totalSupply = ZERO;
+        vault.totalDelegateBalance = ZERO;
+        vault.totalDelegateTwab = ZERO;
         vault.save();
     }
 

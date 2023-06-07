@@ -5,6 +5,7 @@ import {
     DecreasedTotalSupply,
     Delegated,
     ObservationRecorded,
+    TotalSupplyObservationRecorded,
 } from '../../generated/TwabController/TwabController';
 import {
     increaseBalance,
@@ -18,6 +19,8 @@ import { createTwabObservation, setTwabObservation } from '../helpers/twabObserv
 import { createBalanceChange, setBalanceChange } from '../helpers/balanceChange';
 import { loadOrCreateAccount } from '../helpers/loadOrCreateAccount';
 import { loadOrCreateVault } from '../helpers/loadOrCreateVault';
+import { createVaultSupplyChange, setVaultSupplyChange } from '../helpers/vaultSupplyChange';
+import { createVaultTwabObservation, setVaultTwabObservation } from '../helpers/vaultTwabObservation';
 
 export function handleIncreasedBalance(event: IncreasedBalance): void {
     const { vault, user, amount, delegateAmount } = event.params;
@@ -55,6 +58,11 @@ export function handleIncreasedTotalSupply(event: IncreasedTotalSupply): void {
     const vaultEntity = loadOrCreateVault(vault);
     increaseTotalSupply(vaultEntity, amount);
 
+    const timestamp = event.block.timestamp;
+    const supplyChange = createVaultSupplyChange(vault, timestamp);
+    setVaultSupplyChange(supplyChange, vaultEntity, amount, timestamp);
+
+    supplyChange.save();
     vaultEntity.save();
 }
 
@@ -64,6 +72,11 @@ export function handleDecreasedTotalSupply(event: DecreasedTotalSupply): void {
     const vaultEntity = loadOrCreateVault(vault);
     decreaseTotalSupply(vaultEntity, amount);
 
+    const timestamp = event.block.timestamp;
+    const supplyChange = createVaultSupplyChange(vault, timestamp);
+    setVaultSupplyChange(supplyChange, vaultEntity, amount.neg(), timestamp);
+
+    supplyChange.save();
     vaultEntity.save();
 }
 
@@ -80,15 +93,29 @@ export function handleDelegated(event: Delegated): void {
 }
 
 export function handleObservationRecorded(event: ObservationRecorded): void {
-    const { vault, user, isNew, observation } = event.params;
+    const { vault, user, isNew, balance, delegateBalance, observation } = event.params;
 
     const account = loadOrCreateAccount(vault, user);
     account.delegateTwab = observation.cumulativeBalance;
 
     const timestamp = event.block.timestamp;
     const twabObservation = createTwabObservation(vault, user, timestamp);
-    setTwabObservation(twabObservation, account, observation.cumulativeBalance, observation.balance, isNew, timestamp);
+    setTwabObservation(twabObservation, account, balance, delegateBalance, observation.cumulativeBalance, isNew, timestamp);
 
-    account.save();
     twabObservation.save();
+    account.save();
+}
+
+export function handleTotalSupplyObservationRecorded(event: TotalSupplyObservationRecorded): void {
+    const { vault, isNew, balance, delegateBalance, observation } = event.params;
+
+    const vaultEntity = loadOrCreateVault(vault);
+    vaultEntity.totalDelegateTwab = observation.cumulativeBalance;
+
+    const timestamp = event.block.timestamp;
+    const vaultTwabObservation = createVaultTwabObservation(vault, timestamp);
+    setVaultTwabObservation(vaultTwabObservation, vaultEntity, balance, delegateBalance, observation.cumulativeBalance, isNew, timestamp);
+
+    vaultTwabObservation.save();
+    vaultEntity.save();
 }
