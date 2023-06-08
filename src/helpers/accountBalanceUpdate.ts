@@ -1,9 +1,27 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 
-import { AccountBalanceUpdate } from '../../generated/schema';
+import { Account, AccountBalanceUpdate } from '../../generated/schema';
 import { loadOrCreateAccount } from './loadOrCreateAccount';
 
 export const createAccountBalanceUpdate = (
+    id: string,
+    account: Account,
+    amount: BigInt,
+    delegateAmount: BigInt,
+    timestamp: BigInt,
+): AccountBalanceUpdate => {
+    const balanceUpdate = new AccountBalanceUpdate(id);
+    balanceUpdate.account = account.id;
+    balanceUpdate.amount = amount;
+    balanceUpdate.delegateAmount = delegateAmount;
+    balanceUpdate.balance = account.balance;
+    balanceUpdate.delegateBalance = account.delegateBalance;
+    balanceUpdate.timestamp = timestamp;
+    balanceUpdate.save();
+    return balanceUpdate;
+}
+
+export const updateAccountBalance = (
     id: string,
     vaultId: Address,
     userId: Address,
@@ -19,13 +37,5 @@ export const createAccountBalanceUpdate = (
     account.save();
 
     // Create balance update entity
-    const balanceUpdate = new AccountBalanceUpdate(id);
-    balanceUpdate.account = account.id;
-    balanceUpdate.amount = amount;
-    balanceUpdate.delegateAmount = delegateAmount;
-    balanceUpdate.balance = account.balance;
-    balanceUpdate.delegateBalance = account.delegateBalance;
-    balanceUpdate.timestamp = timestamp;
-    balanceUpdate.save();
-    return balanceUpdate;
+    return createAccountBalanceUpdate(id, account, amount, delegateAmount, timestamp);
 };

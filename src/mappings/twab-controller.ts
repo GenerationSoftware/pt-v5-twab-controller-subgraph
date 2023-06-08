@@ -8,34 +8,34 @@ import {
     TotalSupplyObservationRecorded,
 } from '../../generated/TwabController/TwabController';
 import { createAccountObservation } from '../helpers/accountObservation';
-import { createAccountBalanceUpdate } from '../helpers/accountBalanceUpdate';
+import { updateAccountBalance } from '../helpers/accountBalanceUpdate';
 import { loadOrCreateAccount } from '../helpers/loadOrCreateAccount';
 import { createVaultObservation } from '../helpers/vaultObservation';
-import { createVaultBalanceUpdate } from '../helpers/vaultBalanceUpdate';
+import { updateVaultBalance } from '../helpers/vaultBalanceUpdate';
 import { generateUniqueLogId } from '../helpers/common';
 
 export function handleIncreasedBalance(event: IncreasedBalance): void {
     const { vault, user, amount, delegateAmount } = event.params;
     const updateId = generateUniqueLogId(event);
-    createAccountBalanceUpdate(updateId, vault, user, amount, delegateAmount, event.block.timestamp);
+    updateAccountBalance(updateId, vault, user, amount, delegateAmount, event.block.timestamp);
 }
 
 export function handleDecreasedBalance(event: DecreasedBalance): void {
     const { vault, user, amount, delegateAmount } = event.params;
     const updateId = generateUniqueLogId(event);
-    createAccountBalanceUpdate(updateId, vault, user, amount.neg(), delegateAmount.neg(), event.block.timestamp);
+    updateAccountBalance(updateId, vault, user, amount.neg(), delegateAmount.neg(), event.block.timestamp);
 }
 
 export function handleIncreasedTotalSupply(event: IncreasedTotalSupply): void {
     const { vault, amount, delegateAmount } = event.params;
     const updateId = generateUniqueLogId(event);
-    createVaultBalanceUpdate(updateId, vault, amount, delegateAmount, event.block.timestamp);
+    updateVaultBalance(updateId, vault, amount, delegateAmount, event.block.timestamp);
 }
 
 export function handleDecreasedTotalSupply(event: DecreasedTotalSupply): void {
     const { vault, amount, delegateAmount } = event.params;
     const updateId = generateUniqueLogId(event);
-    createVaultBalanceUpdate(updateId, vault, amount.neg(), delegateAmount.neg(), event.block.timestamp);
+    updateVaultBalance(updateId, vault, amount.neg(), delegateAmount.neg(), event.block.timestamp);
 }
 
 export function handleDelegated(event: Delegated): void {
