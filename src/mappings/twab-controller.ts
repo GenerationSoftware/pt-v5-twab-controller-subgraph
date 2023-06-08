@@ -45,9 +45,7 @@ export function handleDelegated(event: Delegated): void {
     const delegateAccount = loadOrCreateAccount(vault, delegate);
 
     delegatorAccount.delegate = delegateAccount.id;
-
     delegatorAccount.save();
-    delegateAccount.save();
 }
 
 export function handleObservationRecorded(event: ObservationRecorded): void {
