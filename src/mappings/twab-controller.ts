@@ -4,88 +4,58 @@ import {
     IncreasedTotalSupply,
     DecreasedTotalSupply,
     Delegated,
+    ObservationRecorded,
+    TotalSupplyObservationRecorded,
 } from '../../generated/TwabController/TwabController';
-import {
-    increaseBalance,
-    decreaseBalance,
-    increaseDelegateBalance,
-    decreaseDelegateBalance,
-    setDelegatee,
-} from '../helpers/account';
-import { increaseTotalSupply, decreaseTotalSupply } from '../helpers/vault';
-import { createTwab } from '../helpers/createTwab';
+import { createAccountObservation } from '../helpers/accountObservation';
+import { updateAccountBalance } from '../helpers/accountBalanceUpdate';
 import { loadOrCreateAccount } from '../helpers/loadOrCreateAccount';
-import { loadOrCreateVault } from '../helpers/loadOrCreateVault';
-import { setTwab } from '../helpers/twab';
+import { createVaultObservation } from '../helpers/vaultObservation';
+import { updateVaultBalance } from '../helpers/vaultBalanceUpdate';
+import { generateUniqueLogId } from '../helpers/common';
 
 export function handleIncreasedBalance(event: IncreasedBalance): void {
-    const vault = event.params.vault;
-    const user = event.params.user;
-    const amount = event.params.amount;
-    const delegateAmount = event.params.delegateAmount;
-    const isNew = event.params.isNew;
-
-    const account = loadOrCreateAccount(vault, user);
-    increaseBalance(account, amount);
-    increaseDelegateBalance(account, delegateAmount);
-
-    const timestamp = event.block.timestamp;
-    const twab = createTwab(vault, user, timestamp);
-    setTwab(twab, account, amount, delegateAmount, isNew, timestamp);
-
-    twab.save();
-    account.save();
+    const { vault, user, amount, delegateAmount } = event.params;
+    const updateId = generateUniqueLogId(event);
+    updateAccountBalance(updateId, vault, user, amount, delegateAmount, event.block.timestamp);
 }
 
 export function handleDecreasedBalance(event: DecreasedBalance): void {
-    const vault = event.params.vault;
-    const user = event.params.user;
-    const amount = event.params.amount;
-    const delegateAmount = event.params.delegateAmount;
-    const isNew = event.params.isNew;
-
-    const account = loadOrCreateAccount(vault, user);
-    decreaseBalance(account, amount);
-    decreaseDelegateBalance(account, delegateAmount);
-
-    const timestamp = event.block.timestamp;
-    const twab = createTwab(vault, user, timestamp);
-    setTwab(twab, account, amount, delegateAmount, isNew, timestamp);
-
-    twab.save();
-    account.save();
+    const { vault, user, amount, delegateAmount } = event.params;
+    const updateId = generateUniqueLogId(event);
+    updateAccountBalance(updateId, vault, user, amount.neg(), delegateAmount.neg(), event.block.timestamp);
 }
 
 export function handleIncreasedTotalSupply(event: IncreasedTotalSupply): void {
-    const vault = event.params.vault;
-    const amount = event.params.amount;
-
-    const vaultEntity = loadOrCreateVault(vault);
-    increaseTotalSupply(vaultEntity, amount);
-
-    vaultEntity.save();
+    const { vault, amount, delegateAmount } = event.params;
+    const updateId = generateUniqueLogId(event);
+    updateVaultBalance(updateId, vault, amount, delegateAmount, event.block.timestamp);
 }
 
 export function handleDecreasedTotalSupply(event: DecreasedTotalSupply): void {
-    const vault = event.params.vault;
-    const amount = event.params.amount;
-
-    const vaultEntity = loadOrCreateVault(vault);
-    decreaseTotalSupply(vaultEntity, amount);
-
-    vaultEntity.save();
+    const { vault, amount, delegateAmount } = event.params;
+    const updateId = generateUniqueLogId(event);
+    updateVaultBalance(updateId, vault, amount.neg(), delegateAmount.neg(), event.block.timestamp);
 }
 
 export function handleDelegated(event: Delegated): void {
-    const vault = event.params.vault;
-    const delegate = event.params.delegator;
-    const delegatee = event.params.delegate;
+    const { vault, delegator, delegate } = event.params;
 
+    const delegatorAccount = loadOrCreateAccount(vault, delegator);
     const delegateAccount = loadOrCreateAccount(vault, delegate);
-    const delegateeAccount = loadOrCreateAccount(vault, delegatee);
 
-    setDelegatee(delegateAccount, delegateeAccount.id);
+    delegatorAccount.delegate = delegateAccount.id;
+    delegatorAccount.save();
+}
 
-    delegateAccount.save();
-    delegateeAccount.save();
+export function handleObservationRecorded(event: ObservationRecorded): void {
+    const { vault, user, isNew, balance, delegateBalance, observation } = event.params;
+    const observationId = generateUniqueLogId(event);
+    createAccountObservation(observationId, vault, user, balance, delegateBalance, observation.cumulativeBalance, isNew, event.block.timestamp);
+}
+
+export function handleTotalSupplyObservationRecorded(event: TotalSupplyObservationRecorded): void {
+    const { vault, isNew, balance, delegateBalance, observation } = event.params;
+    const observationId = generateUniqueLogId(event);
+    createVaultObservation(observationId, vault, balance, delegateBalance, observation.cumulativeBalance, isNew, event.block.timestamp);
 }

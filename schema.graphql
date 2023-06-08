@@ -1,6 +1,9 @@
 type Vault @entity {
     id: Bytes!
-    totalSupply: BigInt!
+    balance: BigInt!
+    delegateBalance: BigInt!
+    balanceUpdates: [VaultBalanceUpdate!]! @derivedFrom(field: "vault")
+    observations: [VaultObservation!]! @derivedFrom(field: "vault")
     accounts: [Account!]! @derivedFrom(field: "vault")
 }
 
@@ -15,16 +18,63 @@ type Account @entity {
     user: User!
     balance: BigInt! # balance in account
     delegateBalance: BigInt! # amount of balance delegated to this account
-    twabs: [Twab!]! @derivedFrom(field: "account")
-    delegates: [Account!]! @derivedFrom(field: "delegatee") # accounts who delegated to this account
-    delegatee: Account # account to whom this account delegates their balances
+    balanceUpdates: [AccountBalanceUpdate!]! @derivedFrom(field: "account")
+    observations: [AccountObservation!]! @derivedFrom(field: "account")
+    delegators: [Account!]! @derivedFrom(field: "delegate") # accounts who delegated to this account
+    delegate: Account # account to whom this account delegates their balances
 }
 
-type Twab @entity {
-    id: String! # account address + timestamp
+type AccountBalanceUpdate implements BalanceUpdate @entity {
+    id: ID!
     amount: BigInt!
+    delegateAmount: BigInt!
+    balance: BigInt!
     delegateBalance: BigInt!
     timestamp: BigInt!
     account: Account!
+}
+
+type VaultBalanceUpdate implements BalanceUpdate @entity {
+    id: ID!
+    amount: BigInt!
+    delegateAmount: BigInt!
+    balance: BigInt!
+    delegateBalance: BigInt!
+    timestamp: BigInt!
+    vault: Vault!
+}
+
+type AccountObservation implements Observation @entity {
+    id: ID!
+    account: Account!
+    balance: BigInt!
+    delegateBalance: BigInt!
+    cumulativeBalance: BigInt!
+    timestamp: BigInt!
     isNew: Boolean!
+}
+
+type VaultObservation implements Observation @entity {
+    id: ID!
+    vault: Vault!
+    balance: BigInt!
+    delegateBalance: BigInt!
+    cumulativeBalance: BigInt!
+    timestamp: BigInt!
+    isNew: Boolean!
+}
+
+interface BalanceUpdate {
+    amount: BigInt!
+    delegateAmount: BigInt!
+    balance: BigInt!
+    delegateBalance: BigInt!
+    timestamp: BigInt!
+}
+
+interface Observation {
+    balance: BigInt!
+    delegateBalance: BigInt!
+    cumulativeBalance: BigInt!
+    timestamp: BigInt!
 }
