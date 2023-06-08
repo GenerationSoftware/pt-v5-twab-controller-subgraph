@@ -15,31 +15,43 @@ import { updateVaultBalance } from '../helpers/vaultBalanceUpdate';
 import { generateUniqueLogId } from '../helpers/common';
 
 export function handleIncreasedBalance(event: IncreasedBalance): void {
-    const { vault, user, amount, delegateAmount } = event.params;
+    const vault = event.params.vault;
+    const user = event.params.user;
+    const amount = event.params.amount;
+    const delegateAmount = event.params.delegateAmount;
     const updateId = generateUniqueLogId(event);
     updateAccountBalance(updateId, vault, user, amount, delegateAmount, event.block.timestamp);
 }
 
 export function handleDecreasedBalance(event: DecreasedBalance): void {
-    const { vault, user, amount, delegateAmount } = event.params;
+    const vault = event.params.vault;
+    const user = event.params.user;
+    const amount = event.params.amount;
+    const delegateAmount = event.params.delegateAmount;
     const updateId = generateUniqueLogId(event);
     updateAccountBalance(updateId, vault, user, amount.neg(), delegateAmount.neg(), event.block.timestamp);
 }
 
 export function handleIncreasedTotalSupply(event: IncreasedTotalSupply): void {
-    const { vault, amount, delegateAmount } = event.params;
+    const vault = event.params.vault;
+    const amount = event.params.amount;
+    const delegateAmount = event.params.delegateAmount;
     const updateId = generateUniqueLogId(event);
     updateVaultBalance(updateId, vault, amount, delegateAmount, event.block.timestamp);
 }
 
 export function handleDecreasedTotalSupply(event: DecreasedTotalSupply): void {
-    const { vault, amount, delegateAmount } = event.params;
+    const vault = event.params.vault;
+    const amount = event.params.amount;
+    const delegateAmount = event.params.delegateAmount;
     const updateId = generateUniqueLogId(event);
     updateVaultBalance(updateId, vault, amount.neg(), delegateAmount.neg(), event.block.timestamp);
 }
 
 export function handleDelegated(event: Delegated): void {
-    const { vault, delegator, delegate } = event.params;
+    const vault = event.params.vault;
+    const delegator = event.params.delegator;
+    const delegate = event.params.delegate;
 
     const delegatorAccount = loadOrCreateAccount(vault, delegator);
     const delegateAccount = loadOrCreateAccount(vault, delegate);
@@ -49,13 +61,22 @@ export function handleDelegated(event: Delegated): void {
 }
 
 export function handleObservationRecorded(event: ObservationRecorded): void {
-    const { vault, user, isNew, balance, delegateBalance, observation } = event.params;
+    const vault = event.params.vault;
+    const user = event.params.user;
+    const isNew = event.params.isNew;
+    const balance = event.params.balance;
+    const delegateBalance = event.params.delegateBalance;
+    const observation = event.params.observation;
     const observationId = generateUniqueLogId(event);
     createAccountObservation(observationId, vault, user, balance, delegateBalance, observation.cumulativeBalance, isNew, event.block.timestamp);
 }
 
 export function handleTotalSupplyObservationRecorded(event: TotalSupplyObservationRecorded): void {
-    const { vault, isNew, balance, delegateBalance, observation } = event.params;
+    const vault = event.params.vault;
+    const isNew = event.params.isNew;
+    const balance = event.params.balance;
+    const delegateBalance = event.params.delegateBalance;
+    const observation = event.params.observation;
     const observationId = generateUniqueLogId(event);
     createVaultObservation(observationId, vault, balance, delegateBalance, observation.cumulativeBalance, isNew, event.block.timestamp);
 }
