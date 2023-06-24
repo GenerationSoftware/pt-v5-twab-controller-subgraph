@@ -1,7 +1,7 @@
 {
   "network": "sepolia",
   "twabController": {
-    "address": "0xd037f82EE26D0160843E7Ba4848513Abac956301",
-    "startBlock": "3610525"
+    "address": "0x21A7c83D23d75b5eA80115974e3473fc35B1f263",
+    "startBlock": "3754555"
   }
 }
