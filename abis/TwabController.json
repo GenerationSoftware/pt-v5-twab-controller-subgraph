@@ -1,5 +1,74 @@
 [
   {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_periodLength",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_periodOffset",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint112",
+        "name": "balance",
+        "type": "uint112"
+      },
+      {
+        "internalType": "uint96",
+        "name": "amount",
+        "type": "uint96"
+      },
+      {
+        "internalType": "string",
+        "name": "message",
+        "type": "string"
+      }
+    ],
+    "name": "BalanceLTAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint112",
+        "name": "delegateBalance",
+        "type": "uint112"
+      },
+      {
+        "internalType": "uint96",
+        "name": "delegateAmount",
+        "type": "uint96"
+      },
+      {
+        "internalType": "string",
+        "name": "message",
+        "type": "string"
+      }
+    ],
+    "name": "DelegateBalanceLTAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "delegate",
+        "type": "address"
+      }
+    ],
+    "name": "SameDelegateAlreadySet",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -249,6 +318,32 @@
     ],
     "name": "TotalSupplyObservationRecorded",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "PERIOD_LENGTH",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "PERIOD_OFFSET",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -665,7 +760,7 @@
         "type": "uint32"
       }
     ],
-    "stateMutability": "pure",
+    "stateMutability": "view",
     "type": "function"
   },
   {
