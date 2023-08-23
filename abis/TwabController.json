@@ -37,6 +37,11 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "CannotTransferToSponsorshipAddress",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint112",
@@ -60,12 +65,76 @@
   {
     "inputs": [
       {
+        "internalType": "uint32",
+        "name": "requestedTimestamp",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "oldestTimestamp",
+        "type": "uint32"
+      }
+    ],
+    "name": "InsufficientHistory",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "start",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "end",
+        "type": "uint256"
+      }
+    ],
+    "name": "InvalidTimeRange",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PeriodLengthTooShort",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "periodOffset",
+        "type": "uint32"
+      }
+    ],
+    "name": "PeriodOffsetInFuture",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "delegate",
         "type": "address"
       }
     ],
     "name": "SameDelegateAlreadySet",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentOverwritePeriodStartedAt",
+        "type": "uint256"
+      }
+    ],
+    "name": "TimestampNotFinalized",
     "type": "error"
   },
   {
@@ -346,19 +415,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "SPONSORSHIP_ADDRESS",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -398,6 +454,19 @@
     "name": "burn",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "currentOverwritePeriodStartedAt",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -528,9 +597,9 @@
                 "type": "uint32"
               }
             ],
-            "internalType": "struct ObservationLib.Observation[365]",
+            "internalType": "struct ObservationLib.Observation[9600]",
             "name": "observations",
-            "type": "tuple[365]"
+            "type": "tuple[9600]"
           }
         ],
         "internalType": "struct TwabLib.Account",
@@ -555,7 +624,7 @@
       },
       {
         "internalType": "uint32",
-        "name": "targetTime",
+        "name": "periodEndOnOrAfterTime",
         "type": "uint32"
       }
     ],
@@ -820,9 +889,9 @@
                 "type": "uint32"
               }
             ],
-            "internalType": "struct ObservationLib.Observation[365]",
+            "internalType": "struct ObservationLib.Observation[9600]",
             "name": "observations",
-            "type": "tuple[365]"
+            "type": "tuple[9600]"
           }
         ],
         "internalType": "struct TwabLib.Account",
@@ -842,7 +911,7 @@
       },
       {
         "internalType": "uint32",
-        "name": "targetTime",
+        "name": "periodEndOnOrAfterTime",
         "type": "uint32"
       }
     ],
@@ -923,109 +992,12 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "vault",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint32",
-        "name": "startTime",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint32",
-        "name": "endTime",
-        "type": "uint32"
-      }
-    ],
-    "name": "isTimeRangeSafe",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "vault",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
         "internalType": "uint32",
         "name": "time",
         "type": "uint32"
       }
     ],
-    "name": "isTimeSafe",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "vault",
-        "type": "address"
-      },
-      {
-        "internalType": "uint32",
-        "name": "startTime",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint32",
-        "name": "endTime",
-        "type": "uint32"
-      }
-    ],
-    "name": "isTotalSupplyTimeRangeSafe",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "vault",
-        "type": "address"
-      },
-      {
-        "internalType": "uint32",
-        "name": "time",
-        "type": "uint32"
-      }
-    ],
-    "name": "isTotalSupplyTimeSafe",
+    "name": "hasFinalized",
     "outputs": [
       {
         "internalType": "bool",
@@ -1052,6 +1024,25 @@
     "name": "mint",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_timestamp",
+        "type": "uint32"
+      }
+    ],
+    "name": "periodEndOnOrAfter",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
