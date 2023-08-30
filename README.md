@@ -58,4 +58,4 @@ Testnet (Ethereum Sepolia):
 
 Testnet (Optimism Goerli):
 
--   https://api.studio.thegraph.com/proxy/41211/pt-v5-op-goerli-twab-control/v0.0.1
+-   https://api.studio.thegraph.com/query/41211/pt-v5-op-goerli-twab-control/v0.0.2
