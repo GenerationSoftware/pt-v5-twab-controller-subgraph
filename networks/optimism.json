@@ -1,0 +1,7 @@
+{
+  "network": "optimism",
+  "twabController": {
+    "address": "0x0D51a33975024E8aFc55fde9F6b070c10AA71Dd9",
+    "startBlock": "108927307"
+  }
+}

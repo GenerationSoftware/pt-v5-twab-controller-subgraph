@@ -20,6 +20,12 @@ Monitors changes in v5 time-weighted average balances.
 $ yarn all-mainnet
 ```
 
+### For Optimism:
+
+```sh
+$ yarn all-optimism:decentralized
+```
+
 ### For Testnet:
 
 #### For Goerli:
@@ -44,9 +50,9 @@ $ yarn all-optimism-goerli:decentralized
 
 Subgraphs are hosted at the following URLs.
 
-Mainnet:
+Optimism:
 
--   https://thegraph.com/hosted-service/subgraph/pooltogether/v5-mainnet-twab-controller
+- https://api.studio.thegraph.com/query/41211/pt-v5-optimism-twab-controller/v0.0.1
 
 Testnet (Ethereum Goerli):
 
